@@ -1,7 +1,7 @@
 Summary: The GNU versions of find utilities (find and xargs)
 Name: findutils
 Version: 4.8.0
-Release: 5%{?dist}
+Release: 6%{?dist}
 Epoch: 1
 License: GPLv3+
 URL: https://www.gnu.org/software/findutils/
@@ -21,6 +21,9 @@ Patch4:  findutils-4.6.0-test-lock.patch
 
 # implement the -noleaf option of find (#1252549)
 Patch5:  findutils-4.6.0-leaf-opt.patch
+
+# fix find not obeying option -ignore_readdir_race in symlink_loop (#2232519)
+Patch6: findutils-4.6.0-ignore_readdir_race-symlink_loop.patch
 
 Conflicts: filesystem < 3
 Provides: /bin/find
@@ -111,6 +114,9 @@ rm -f %{buildroot}%{_infodir}/dir
 %{_infodir}/find-maint.info.*
 
 %changelog
+* Thu Aug 17 2023 Lukáš Zaoral <lzaoral@redhat.com> - 1:4.8.0-6
+- fix find not obeying option -ignore_readdir_race in symlink_loop (#2232519)
+
 * Mon Aug 09 2021 Mohan Boddu <mboddu@redhat.com> - 1:4.8.0-5
 - Rebuilt for IMA sigs, glibc 2.34, aarch64 flags
   Related: rhbz#1991688
