@@ -1,7 +1,7 @@
 Summary: The GNU versions of find utilities (find and xargs)
 Name: findutils
 Version: 4.6.0
-Release: 20%{?dist}.1
+Release: 21%{?dist}
 Epoch: 1
 License: GPLv3+
 Group: Applications/File
@@ -49,7 +49,7 @@ Patch12: findutils-4.6.0-leaf-opt.patch
 # fix programming mistakes detected by static analysis (#1606953)
 Patch13: findutils-4.6.0-covscan.patch
 
-# fix find not obeying option -ignore_readdir_race in symlink_loop (#2232514)
+# fix find not obeying option -ignore_readdir_race in symlink_loop (#2232278)
 Patch14: findutils-4.6.0-ignore_readdir_race-symlink_loop.patch
 
 Requires(post): /sbin/install-info
@@ -153,8 +153,8 @@ fi
 %{_infodir}/find-maint.info.gz
 
 %changelog
-* Thu Aug 17 2023 Lukáš Zaoral <lzaoral@redhat.com> - 1:4.6.0-20.1
-- fix find not obeying option -ignore_readdir_race in symlink_loop (#2232514)
+* Wed Aug 16 2023 Lukáš Zaoral <lzaoral@redhat.com> - 1:4.6.0-21
+- fix find not obeying option -ignore_readdir_race in symlink_loop (#2232278)
 
 * Mon Nov 05 2018 Kamil Dudka <kdudka@redhat.com> - 1:4.6.0-20
 - fix programming mistakes detected by static analysis (#1606953)
