@@ -1,0 +1,80 @@
+From efa455493063270406f3c206d62032a475e52c47 Mon Sep 17 00:00:00 2001
+From: Kamil Dudka <kdudka@redhat.com>
+Date: Tue, 6 Oct 2020 17:10:08 +0200
+Subject: [PATCH] doc: avoid misunderstanding of '-printf %Ak' description
+
+* find/find.1 (-printf): Make it clear that the list of conversion
+specification characters of '%Ak' is incomplete; refer to the
+strftime() documentation.  While at it, document the F conversion
+character which yields 'yyyy-mm-dd'.
+* doc/find.texi (Time Formats): Likewise.
+
+Suggested in https://bugzilla.redhat.com/1882695
+
+Cherry-picked-by: Lukáš Zaoral <lzaoral@redhat.com>
+---
+ doc/find.texi | 11 +++++++----
+ find/find.1   |  9 ++++++---
+ 2 files changed, 13 insertions(+), 7 deletions(-)
+
+diff --git a/doc/find.texi b/doc/find.texi
+index ce63ca52..0d7c8ae8 100644
+--- a/doc/find.texi
++++ b/doc/find.texi
+@@ -2063,10 +2063,11 @@ behaviour, because other directives may be added in the future.
+ @node Time Formats
+ @subsection Time Formats
+ 
+-Below are the formats for the directives @samp{%A}, @samp{%C}, and
+-@samp{%T}, which print the file's timestamps.  Some of these formats
+-might not be available on all systems, due to differences in the C
+-@code{strftime} function between systems.
++Below is an incomplete list of formats for the directives @samp{%A}, @samp{%C},
++and @samp{%T}, which print the file's timestamps.
++Please refer to the documentation of @code{strftime} for the full list.
++Some of these formats might not be available on all systems, due to differences
++in the implementation of the C @code{strftime} function.
+ 
+ @menu
+ * Time Components::
+@@ -2162,6 +2163,8 @@ locale's date and time in ctime format (Sat Nov 04 12:02:33 EST
+ seconds field.
+ @item D
+ date (mm/dd/yy)
++@item F
++date (yyyy-mm-dd)
+ @item x
+ locale's date representation (mm/dd/yy)
+ @item +
+diff --git a/find/find.1 b/find/find.1
+index ee7c6842..27ec62cd 100644
+--- a/find/find.1
++++ b/find/find.1
+@@ -1420,10 +1420,11 @@
+ File's last access time in the format returned by the C `ctime' function.
+ .IP %A\fIk\fP
+ File's last access time in the format specified by \fIk\fR, which is
+-either `@' or a directive for the C `strftime' function.  The possible
+-values for \fIk\fR are listed below; some of them might not be
+-available on all systems, due to differences in `strftime' between
+-systems.
++either `@' or a directive for the C `strftime' function.  The following
++shows an incomplete list of possible values for \fIk\fR.
++Please refer to the documentation of `strftime' for the full list.
++Some of the conversion specification characters might not be available on all systems,
++due to differences in the implementation of the `strftime' library function.
+ .RS
+ .IP @
+ seconds since Jan.\& 1, 1970, 00:00 GMT, with fractional part.
+@@ -1476,6 +1477,8 @@ in the seconds field.
+ day of month (01..31)
+ .IP D
+ date (mm/dd/yy)
++.IP F
++date (yyyy-mm-dd)
+ .IP h
+ same as b
+ .IP j
+-- 
+2.41.0
+

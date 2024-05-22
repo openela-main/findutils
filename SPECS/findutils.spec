@@ -1,7 +1,7 @@
 Summary: The GNU versions of find utilities (find and xargs)
 Name: findutils
 Version: 4.6.0
-Release: 21%{?dist}
+Release: 22%{?dist}
 Epoch: 1
 License: GPLv3+
 Group: Applications/File
@@ -51,6 +51,9 @@ Patch13: findutils-4.6.0-covscan.patch
 
 # fix find not obeying option -ignore_readdir_race in symlink_loop (#2232278)
 Patch14: findutils-4.6.0-ignore_readdir_race-symlink_loop.patch
+
+# manpage of find is incomplete regarding printf options (#1882695)
+Patch15: findutils-4.6.0-improve-printf-Ak-description.patch
 
 Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
@@ -153,6 +156,9 @@ fi
 %{_infodir}/find-maint.info.gz
 
 %changelog
+* Mon Aug 21 2023 Lukáš Zaoral <lzaoral@redhat.com> - 1:4.6.0-22
+- improve description of printf options in find manpage (#1882695)
+
 * Wed Aug 16 2023 Lukáš Zaoral <lzaoral@redhat.com> - 1:4.6.0-21
 - fix find not obeying option -ignore_readdir_race in symlink_loop (#2232278)
 
