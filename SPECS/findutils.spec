@@ -1,7 +1,7 @@
 Summary: The GNU versions of find utilities (find and xargs)
 Name: findutils
 Version: 4.6.0
-Release: 22%{?dist}
+Release: 23%{?dist}
 Epoch: 1
 License: GPLv3+
 Group: Applications/File
@@ -156,6 +156,9 @@ fi
 %{_infodir}/find-maint.info.gz
 
 %changelog
+* Thu Jul 04 2024 Lukáš Zaoral <lzaoral@redhat.com> - 1:4.6.0-23
+- fix autofs patch when stat was not performed (RHEL-45720)
+
 * Mon Aug 21 2023 Lukáš Zaoral <lzaoral@redhat.com> - 1:4.6.0-22
 - improve description of printf options in find manpage (#1882695)
 

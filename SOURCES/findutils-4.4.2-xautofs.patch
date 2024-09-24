@@ -1,19 +1,19 @@
-From 17e470dc1acca4824b70328d733d5f99c12d0d65 Mon Sep 17 00:00:00 2001
+From cd653102f401f91748c3f038be4d38ddacc2d7db Mon Sep 17 00:00:00 2001
 From: Kamil Dudka <kdudka@redhat.com>
-Date: Wed, 11 May 2011 16:46:45 +0200
-Subject: [PATCH 3/4] findutils-4.4.2-xautofs.patch
+Date: Wed, 3 Jul 2024 10:22:49 +0200
+Subject: [PATCH] findutils-4.4.2-xautofs.patch
 
 ---
- doc/find.texi  |    4 ++++
- find/defs.h    |    3 +++
- find/find.1    |    3 +++
- find/ftsfind.c |    6 ++++++
- find/parser.c  |   11 ++++++++++-
- find/util.c    |    1 +
- 6 files changed, 27 insertions(+), 1 deletions(-)
+ doc/find.texi  |  4 ++++
+ find/defs.h    |  3 +++
+ find/find.1    |  3 +++
+ find/ftsfind.c | 11 +++++++++--
+ find/parser.c  | 11 ++++++++++-
+ find/util.c    |  1 +
+ 6 files changed, 30 insertions(+), 3 deletions(-)
 
 diff --git a/doc/find.texi b/doc/find.texi
-index c584298..9731b71 100644
+index b32db8c..1691d2d 100644
 --- a/doc/find.texi
 +++ b/doc/find.texi
 @@ -1446,6 +1446,10 @@ them.
@@ -28,7 +28,7 @@ index c584298..9731b71 100644
  @deffnx Option -mount
  Don't descend directories on other filesystems.  These options are
 diff --git a/find/defs.h b/find/defs.h
-index 11d1d00..f95ce72 100644
+index ba0b855..7e6d4bb 100644
 --- a/find/defs.h
 +++ b/find/defs.h
 @@ -557,6 +557,9 @@ struct options
@@ -42,7 +42,7 @@ index 11d1d00..f95ce72 100644
     * no longer exists by the time we get around to processing it.
     */
 diff --git a/find/find.1 b/find/find.1
-index e851f82..a4799ff 100644
+index 7b141b8..a36a0bc 100644
 --- a/find/find.1
 +++ b/find/find.1
 @@ -520,6 +520,9 @@ to stat them; this gives a significant increase in search speed.
@@ -56,15 +56,27 @@ index e851f82..a4799ff 100644
  Don't descend directories on other filesystems.
  
 diff --git a/find/ftsfind.c b/find/ftsfind.c
-index 9fdb8ef..bd7cc37 100644
+index 414327b..6620bdb 100644
 --- a/find/ftsfind.c
 +++ b/find/ftsfind.c
-@@ -485,6 +485,12 @@ consider_visiting (FTS *p, FTSENT *ent)
+@@ -331,8 +331,8 @@ show_outstanding_execdirs (FILE *fp)
+ static void
+ consider_visiting (FTS *p, FTSENT *ent)
+ {
+-  struct stat statbuf;
+-  mode_t mode;
++  struct stat statbuf = {0};
++  mode_t mode = 0;
+   int ignore, isdir;
+ 
+   if (options.debug_options & DebugSearch)
+@@ -485,6 +485,13 @@ consider_visiting (FTS *p, FTSENT *ent)
  	}
      }
  
-+  if (options.bypass_autofs &&
-+      0 == strcmp ("autofs", filesystem_type (&statbuf, ent->fts_name)))
++  if (options.bypass_autofs
++        && 0 == get_statinfo (ent->fts_path, ent->fts_name, &statbuf)
++        && 0 == strcmp ("autofs", filesystem_type (&statbuf, ent->fts_name)))
 +    {
 +      fts_set(p, ent, FTS_SKIP); /* descend no further */
 +    }
@@ -73,7 +85,7 @@ index 9fdb8ef..bd7cc37 100644
      {
        /* this is the preorder visit, but user said -depth */
 diff --git a/find/parser.c b/find/parser.c
-index 52a1ef6..995aec3 100644
+index b57cdda..91e914a 100644
 --- a/find/parser.c
 +++ b/find/parser.c
 @@ -146,6 +146,7 @@ static bool parse_user          (const struct parser_table*, char *argv[], int *
@@ -101,22 +113,22 @@ index 52a1ef6..995aec3 100644
    puts (_("\
  tests (N can be +N or -N or N): -amin N -anewer FILE -atime N -cmin N\n\
        -cnewer FILE -ctime N -empty -false -fstype TYPE -gid N -group NAME\n\
-@@ -2683,6 +2685,13 @@ parse_xdev (const struct parser_table* entry, char **argv, int *arg_ptr)
+@@ -2682,6 +2684,13 @@ parse_xdev (const struct parser_table* entry, char **argv, int *arg_ptr)
+   return parse_noop (entry, argv, arg_ptr);
  }
  
- static bool
++static bool
 +parse_xautofs (const struct parser_table* entry, char **argv, int *arg_ptr)
 +{
 +  options.bypass_autofs = true;
 +  return parse_noop (entry, argv, arg_ptr);
 +}
 +
-+static bool
+ static bool
  parse_ignore_race (const struct parser_table* entry, char **argv, int *arg_ptr)
  {
-   options.ignore_readdir_race = true;
 diff --git a/find/util.c b/find/util.c
-index 8577396..4d45f84 100644
+index 5ffe140..3448a67 100644
 --- a/find/util.c
 +++ b/find/util.c
 @@ -1017,6 +1017,7 @@ set_option_defaults (struct options *p)
@@ -128,5 +140,5 @@ index 8577396..4d45f84 100644
  
    if (p->posixly_correct)
 -- 
-1.7.4.4
+2.45.2
 
