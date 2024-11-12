@@ -1,7 +1,7 @@
 Summary: The GNU versions of find utilities (find and xargs)
 Name: findutils
 Version: 4.8.0
-Release: 6%{?dist}
+Release: 7%{?dist}
 Epoch: 1
 License: GPLv3+
 URL: https://www.gnu.org/software/findutils/
@@ -114,6 +114,9 @@ rm -f %{buildroot}%{_infodir}/dir
 %{_infodir}/find-maint.info.*
 
 %changelog
+* Thu Jul 04 2024 Lukáš Zaoral <lzaoral@redhat.com> - 1:4.8.0-7
+- fix autofs patch when stat was not performed (RHEL-45721)
+
 * Thu Aug 17 2023 Lukáš Zaoral <lzaoral@redhat.com> - 1:4.8.0-6
 - fix find not obeying option -ignore_readdir_race in symlink_loop (#2232519)
 
