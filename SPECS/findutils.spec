@@ -1,7 +1,7 @@
 Summary: The GNU versions of find utilities (find and xargs)
 Name: findutils
 Version: 4.6.0
-Release: 23%{?dist}
+Release: 24%{?dist}
 Epoch: 1
 License: GPLv3+
 Group: Applications/File
@@ -54,6 +54,9 @@ Patch14: findutils-4.6.0-ignore_readdir_race-symlink_loop.patch
 
 # manpage of find is incomplete regarding printf options (#1882695)
 Patch15: findutils-4.6.0-improve-printf-Ak-description.patch
+
+# simplify leaf optimization for XFS (RHEL-109249)
+Patch16: findutils-4.6.0-leaf-opt-xfs.patch
 
 Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
@@ -156,6 +159,9 @@ fi
 %{_infodir}/find-maint.info.gz
 
 %changelog
+* Wed Sep 03 2025 Lukáš Zaoral <lzaoral@redhat.com> - 1:4.6.0-24
+- simplify leaf optimization for XFS (RHEL-109249)
+
 * Thu Jul 04 2024 Lukáš Zaoral <lzaoral@redhat.com> - 1:4.6.0-23
 - fix autofs patch when stat was not performed (RHEL-45720)
 
